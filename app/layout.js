@@ -1,27 +1,28 @@
-import localFont from "next/font/local";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+const fontSans = Inter({
+  subsets: ["latin"],
   variable: "--font-geist-sans",
-  weight: "100 900",
+  display: "swap",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+const fontMono = JetBrains_Mono({
+  subsets: ["latin"],
   variable: "--font-geist-mono",
-  weight: "100 900",
+  display: "swap",
 });
 
 export const metadata = {
-  title: "Tiger E-Bikes - Unleash the Electric Thrill",
-  description: "Experience the ultimate electric performance with Tiger E-Bikes. Sustainable, high-speed, and engineered for the modern rider.",
+  title: "Tiger E-Bikes | Electric Performance, Refined",
+  description:
+    "Precision-built electric two-wheelers with long-range batteries, fast charging, and a connected ownership experience.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white selection:bg-white selection:text-black`}>
+      <body className={`${fontSans.variable} ${fontMono.variable} antialiased bg-black text-white selection:bg-white selection:text-black`}>
         <Navbar />
         <main className="w-full relative pt-[70px] overflow-x-hidden">
           {children}

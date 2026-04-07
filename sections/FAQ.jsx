@@ -9,25 +9,25 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: "How long does it take to charge a Tiger E-Bike?",
-      answer: "With our Ultra-Fast DC charging stations, you can reach 80% charge in just 45 minutes. Home charging typically takes 4-6 hours for a full charge."
+      question: 'How long does it take to charge a TIGER EV?',
+      answer:
+        'Reach up to 70% in 15–20 minutes with fast charging. Full charge takes 4–6 hours.',
     },
     {
-      question: "What is the battery life expectancy?",
-      answer: "Our Tiger Lithium-ion battery packs are engineered for 5000+ charge cycles, ensuring over 1.5 lakh kilometers of worry-free riding."
+      question: 'What is the battery life expectancy?',
+      answer:
+        'Designed for over 1500 cycles, delivering 8–10 years of reliable performance.',
     },
     {
-      question: "Are Tiger E-Bikes waterproof?",
-      answer: "Yes, all Tiger models are IP67 rated, meaning the motor, battery, and controller are fully protected against dust and water immersion."
+      question: 'Are TIGER EV vehicles waterproof?',
+      answer:
+        'Yes, IP67-rated protection ensures durability in all weather conditions.',
     },
     {
-      question: "Do I need a special license to ride?",
-      answer: "Low-speed Tiger Scooters do not require a license or registration. For high-speed models, a standard two-wheeler driving license is required."
+      question: 'Do I need a special license?',
+      answer:
+        'Depends on model—standard license for low-speed, motorcycle license for high-performance models.',
     },
-    {
-      question: "What is the warranty on Tiger batteries?",
-      answer: "We offer a standard 3-year warranty on our Tiger battery packs, extendable up to 5 years under certain maintenance programs."
-    }
   ];
 
   const toggleFAQ = (index) => {
@@ -40,18 +40,20 @@ const FAQ = () => {
         
         {/* LEFT: Section Title */}
         <div className="lg:col-span-5 space-y-10">
-            <div className="space-y-4 text-center lg:text-left">
-              <p className="text-tiger-yellow font-black uppercase tracking-[0.4em] text-xs">Customer Support</p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-matte-black tracking-[-0.04em] uppercase leading-[0.9]">
-                  FREQUENTLY <br className="hidden lg:block" /> ASKED <br className="hidden lg:block" /> <span className="text-neutral-300 italic">QUESTIONS</span>
+            <div className="space-y-6 text-center lg:text-left">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-matte-black tracking-[-0.04em] uppercase leading-[0.95] max-w-lg mx-auto lg:mx-0">
+                FREQUENTLY ASKED QUESTIONS
               </h2>
             </div>
-            <p className="text-neutral-500 text-lg md:text-xl font-medium leading-relaxed max-w-sm mx-auto lg:mx-0 text-center lg:text-left">
-                Have a specific question? Explore our comprehensive FAQ or visit your nearest showroom.
+            <p className="text-neutral-600 text-lg md:text-xl font-medium leading-relaxed max-w-md mx-auto lg:mx-0 text-center lg:text-left">
+              Answers to common questions. Visit a showroom for a test ride or detailed consultation.
             </p>
             <div className="flex justify-center lg:justify-start">
-              <button className="flex items-center gap-3 bg-matte-black text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-xl active:scale-95 italic">
-                  Locate Showroom
+              <button
+                type="button"
+                className="flex items-center gap-3 bg-matte-black text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-xl active:scale-95"
+              >
+                FIND A SHOWROOM
               </button>
             </div>
         </div>
@@ -60,18 +62,19 @@ const FAQ = () => {
         <div className="lg:col-span-7 space-y-2">
           {faqs.map((faq, index) => (
             <div 
-              key={index} 
+              key={faq.question} 
               className={cn(
                 "border-b transition-all duration-300 group",
                 openIndex === index ? "border-tiger-yellow" : "border-neutral-100"
               )}
             >
               <button 
+                type="button"
                 onClick={() => toggleFAQ(index)}
                 className="w-full py-8 flex items-center justify-between text-left group"
               >
                 <span className={cn(
-                  "text-xl md:text-2xl font-black uppercase tracking-tight transition-colors italic",
+                  "text-xl md:text-2xl font-black uppercase tracking-tight transition-colors",
                   openIndex === index ? "text-matte-black" : "text-neutral-400 group-hover:text-matte-black"
                 )}>
                   {faq.question}
@@ -90,7 +93,7 @@ const FAQ = () => {
                   openIndex === index ? "max-h-[400px] pb-12" : "max-h-0"
                 )}
               >
-                <p className="text-neutral-500 text-lg md:text-xl font-medium leading-relaxed max-w-2xl italic">
+                <p className="text-neutral-600 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
                   {faq.answer}
                 </p>
               </div>

@@ -1,9 +1,16 @@
+import { Suspense } from 'react';
+
+/** Ensures SSR uses the real request host/port for /api fetches (avoids wrong-port issues in dev). */
+export const dynamic = 'force-dynamic';
 import Hero from '@/sections/Hero';
+import HeroLoading from '@/sections/HeroLoading';
 import FeatureSlider from '@/sections/FeatureSlider';
+import FeatureSliderLoading from '@/sections/FeatureSliderLoading';
 import BatteryTech from '@/sections/BatteryTech';
 import Ecosystem from '@/sections/Ecosystem';
 import ImpactStats from '@/sections/ImpactStats';
 import VehicleShowcase from '@/sections/VehicleShowcase';
+import VehicleShowcaseLoading from '@/sections/VehicleShowcaseLoading';
 import FAQ from '@/sections/FAQ';
 import Footer from '@/components/Footer';
 
@@ -11,14 +18,18 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col bg-matte-black overflow-x-hidden">
       
-      {/* 1. Hero */}
+      {/* 1. Hero (dynamic via /api/hero) */}
       <section className="w-full relative z-10 m-0 p-0">
-        <Hero />
+        <Suspense fallback={<HeroLoading />}>
+          <Hero />
+        </Suspense>
       </section>
 
-      {/* 2. Feature Slider */}
+      {/* 2. Feature Slider (dynamic via /api/features) */}
       <section className="w-full relative z-10 m-0 p-0">
-        <FeatureSlider />
+        <Suspense fallback={<FeatureSliderLoading />}>
+          <FeatureSlider />
+        </Suspense>
       </section>
 
       {/* 3. Battery Tech */}
@@ -36,9 +47,11 @@ export default function Home() {
         <ImpactStats />
       </section>
 
-      {/* 6. Vehicle Showcase */}
+      {/* 6. Vehicle Showcase (dynamic via /api/products) */}
       <section className="w-full relative z-10 m-0 p-0">
-        <VehicleShowcase />
+        <Suspense fallback={<VehicleShowcaseLoading />}>
+          <VehicleShowcase />
+        </Suspense>
       </section>
 
       {/* 7. FAQ */}

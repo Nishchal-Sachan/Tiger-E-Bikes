@@ -5,12 +5,16 @@ import Link from 'next/link';
 import { Phone, Menu } from 'lucide-react';
 
 const Navbar = () => {
+  const centerLinks = [
+    { label: 'TIGER POWER', href: '#charging' },
+    { label: 'TIGER EV', href: '#lineup' },
+  ];
+
   return (
     <nav className="fixed top-0 left-0 w-full h-[70px] bg-matte-black/95 backdrop-blur-xl z-50 border-b border-white/10">
-      <div className="flex justify-between items-center h-full px-6 md:px-12 max-w-[1920px] mx-auto">
-        
-        {/* LOGO */}
-        <div className="flex-shrink-0">
+      <div className="relative flex items-center justify-between h-full px-6 md:px-12 max-w-[1920px] mx-auto">
+        {/* Left: logo */}
+        <div className="flex-shrink-0 z-10">
           <Link href="/" className="flex items-center gap-3 group">
             <img src="/logo.png" alt="Tiger E-Bikes" className="h-8 md:h-10 object-contain transition-transform group-hover:scale-105" />
             <div className="flex flex-col -space-y-1">
@@ -20,29 +24,34 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* CENTERED LINKS */}
-        <div className="hidden lg:flex items-center gap-12 text-[10px] uppercase font-black tracking-[0.3em] text-neutral-400">
-          {['TIGERPOWER', 'LINEUP', 'CHARGING', 'SHOWROOMS', 'ABOUT'].map((item) => (
-            <Link 
-              key={item} 
-              href={`#${item.toLowerCase()}`} 
-              className="hover:text-white transition-colors cursor-pointer"
+        {/* Center: exactly two links */}
+        <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-14 text-[10px] uppercase font-black tracking-[0.28em] text-neutral-400">
+          {centerLinks.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="hover:text-white transition-colors whitespace-nowrap"
             >
-              {item}
+              {item.label}
             </Link>
           ))}
         </div>
 
-        {/* RIGHT: CONTACT / MENU */}
-        <div className="flex items-center gap-8">
-          <div className="hidden md:flex items-center gap-3 text-white">
-            <Phone size={14} className="text-tiger-yellow" />
-            <span className="text-[10px] font-black tracking-widest uppercase hover:text-tiger-yellow cursor-pointer transition-colors">+91 1800-TIGER-EB</span>
+        {/* Right: phone + menu */}
+        <div className="flex items-center gap-6 md:gap-8 flex-shrink-0 z-10">
+          <div className="flex items-center gap-2.5 text-white">
+            <Phone size={14} className="text-tiger-yellow shrink-0" />
+            <span className="text-[9px] sm:text-[10px] font-black tracking-[0.18em] sm:tracking-[0.2em] uppercase whitespace-nowrap">
+              +91 800 TIGER-EB
+            </span>
           </div>
-          
-          <button className="text-white hover:text-tiger-yellow transition-colors p-2">
-            <div className="w-6 h-[2px] bg-current mb-1.5" />
-            <div className="w-4 h-[2px] bg-current" />
+
+          <button
+            type="button"
+            aria-label="Open menu"
+            className="text-white hover:text-tiger-yellow transition-colors p-2 -mr-2"
+          >
+            <Menu size={22} strokeWidth={2.25} />
           </button>
         </div>
       </div>
