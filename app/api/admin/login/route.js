@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { adminSessionCookieOptions } from '@/lib/adminSessionCookie';
 import { ADMIN_TOKEN_COOKIE } from '@/lib/constants';
-import { connectDB, isMongoConfigured } from '@/lib/db';
-import { AdminUser } from '@/models/AdminUser';
 
 export const dynamic = 'force-dynamic';
 const ONE_DAY_SECONDS = 60 * 60 * 24;
@@ -21,7 +18,7 @@ function jsonWithAdminCookie(secret) {
 }
 
 /**
- * POST /api/admin/login — JWT cookie. Uses Mongo admin users when any exist; otherwise .env credentials.
+ * POST /api/admin/login — JWT cookie. Credentials: ADMIN_EMAIL + ADMIN_PASSWORD only (.env).
  * Body: { email: string, password: string }
  */
 export async function POST(request) {
@@ -55,37 +52,6 @@ export async function POST(request) {
   const adminPassword = process.env.ADMIN_PASSWORD;
   const envLoginReady =
     !!adminEmail && adminPassword != null && adminPassword !== '';
-
-  let dbAdminCount = null;
-  if (isMongoConfigured()) {
-    try {
-      await connectDB();
-      dbAdminCount = await AdminUser.countDocuments();
-      if (dbAdminCount > 0) {
-        const user = await AdminUser.findOne({ email: emailInput });
-        if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
-          return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-        }
-        return jsonWithAdminCookie(secret);
-      }
-    } catch (err) {
-      console.error('[POST /api/admin/login]', err);
-      return NextResponse.json(
-        { error: 'Cannot reach the database. Check MONGODB_URI.' },
-        { status: 503 }
-      );
-    }
-  }
-
-  if (isMongoConfigured() && dbAdminCount === 0 && !envLoginReady) {
-    return NextResponse.json(
-      {
-        error:
-          'No admin account yet. Use “Create administrator account” on the login page, or set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local.',
-      },
-      { status: 403 }
-    );
-  }
 
   if (!envLoginReady) {
     return NextResponse.json(

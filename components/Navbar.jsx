@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { Phone, Menu } from 'lucide-react';
+import { Menu, Phone } from "lucide-react";
+import Link from "next/link";
 
 const Navbar = () => {
   const centerLinks = [
-    { label: 'TIGER POWER', href: '/#battery-tech' },
-    { label: 'TIGER EV', href: '/#lineup' },
+    { label: "TIGER POWER", href: "/#battery-tech" },
+    { label: "TIGER EV", href: "/#lineup" },
   ];
 
   return (
@@ -16,10 +15,18 @@ const Navbar = () => {
         {/* Left: logo */}
         <div className="flex-shrink-0 z-10">
           <Link href="/" className="flex items-center gap-3 group">
-            <img src="/logo.png" alt="Tiger E-Bikes" className="h-8 md:h-10 object-contain transition-transform group-hover:scale-105" />
+            <img
+              src="/logo.png"
+              alt="Tiger E-Bikes"
+              className="h-8 md:h-10 object-contain transition-transform group-hover:scale-105"
+            />
             <div className="flex flex-col -space-y-1">
-              <span className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase italic">TIGER</span>
-              <span className="text-[10px] font-black text-tiger-yellow tracking-[0.3em] uppercase italic ml-0.5">E-BIKES</span>
+              <span className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase italic">
+                TIGER
+              </span>
+              <span className="text-[10px] font-black text-tiger-yellow tracking-[0.3em] uppercase italic ml-0.5">
+                E-BIKES
+              </span>
             </div>
           </Link>
         </div>
