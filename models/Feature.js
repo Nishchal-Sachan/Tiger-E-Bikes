@@ -6,6 +6,8 @@ const featureSchema = new mongoose.Schema(
     description: { type: String, required: true, trim: true },
     image: { type: String, required: true, trim: true },
     order: { type: Number, required: true },
+    /** Lucide icon name, e.g. "Battery", "Gauge" — optional. */
+    icon: { type: String, default: '', trim: true },
   },
   { timestamps: true }
 );

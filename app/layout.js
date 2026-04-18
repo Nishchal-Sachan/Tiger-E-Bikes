@@ -1,17 +1,5 @@
-import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
-
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-  display: "swap",
-});
-const fontMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  display: "swap",
-});
 
 export const metadata = {
   title: "Tiger E-Bikes | Electric Performance, Refined",
@@ -21,12 +9,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${fontSans.variable} ${fontMono.variable} antialiased bg-black text-white selection:bg-white selection:text-black`}>
+    <html lang="en" className="dark h-full">
+      <body className="min-h-full antialiased bg-black text-white font-sans selection:bg-white selection:text-black">
         <Navbar />
-        <main className="w-full relative pt-[70px] overflow-x-hidden">
-          {children}
-        </main>
+        <main className="w-full relative pt-[70px] overflow-x-hidden">{children}</main>
       </body>
     </html>
   );

@@ -6,8 +6,8 @@ import { Phone, Menu } from 'lucide-react';
 
 const Navbar = () => {
   const centerLinks = [
-    { label: 'TIGER POWER', href: '#charging' },
-    { label: 'TIGER EV', href: '#lineup' },
+    { label: 'TIGER POWER', href: '/#battery-tech' },
+    { label: 'TIGER EV', href: '/#lineup' },
   ];
 
   return (
@@ -41,9 +41,12 @@ const Navbar = () => {
         <div className="flex items-center gap-6 md:gap-8 flex-shrink-0 z-10">
           <div className="flex items-center gap-2.5 text-white">
             <Phone size={14} className="text-tiger-yellow shrink-0" />
-            <span className="text-[9px] sm:text-[10px] font-black tracking-[0.18em] sm:tracking-[0.2em] uppercase whitespace-nowrap">
-              +91 800 TIGER-EB
-            </span>
+            <a
+              href="tel:+919453605312"
+              className="text-[9px] sm:text-[10px] font-black tracking-[0.18em] sm:tracking-[0.2em] uppercase whitespace-nowrap hover:text-tiger-yellow transition-colors"
+            >
+              9453605312
+            </a>
           </div>
 
           <button

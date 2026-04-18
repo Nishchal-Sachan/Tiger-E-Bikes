@@ -11,6 +11,46 @@ const LOGIN_PATH = '/admin/login';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  /**
+   * Only touch routes this file is meant to handle. If the matcher ever widens or a proxy
+   * invokes middleware for `/careers`, `/contact`, etc., bail out — otherwise the admin JWT
+   * block below would redirect public pages to `/admin/login` and “break” the whole site.
+   */
+  const isHandledRoute =
+    pathname === '/technology' ||
+    pathname.startsWith('/technology/') ||
+    pathname === '/vision' ||
+    pathname.startsWith('/vision/') ||
+    pathname === '/faq' ||
+    pathname.startsWith('/faq/') ||
+    pathname === '/admin' ||
+    pathname.startsWith('/admin/');
+
+  if (!isHandledRoute) {
+    return NextResponse.next();
+  }
+
+  if (pathname === '/technology' || pathname.startsWith('/technology/')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    url.hash = 'battery-tech';
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname === '/vision' || pathname.startsWith('/vision/')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/about';
+    url.hash = 'vision';
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname === '/faq' || pathname.startsWith('/faq/')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    url.hash = 'faq';
+    return NextResponse.redirect(url);
+  }
+
   if (pathname === LOGIN_PATH || pathname.startsWith(`${LOGIN_PATH}/`)) {
     const loginToken = request.cookies.get(ADMIN_TOKEN_COOKIE)?.value;
     const loginSecret = process.env.JWT_SECRET?.trim();
@@ -51,5 +91,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: [
+    '/admin',
+    '/admin/:path*',
+    '/technology',
+    '/technology/:path*',
+    '/vision',
+    '/vision/:path*',
+    '/faq',
+    '/faq/:path*',
+  ],
 };

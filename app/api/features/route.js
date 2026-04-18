@@ -35,7 +35,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { title, description, image, order } = body ?? {};
+    const { title, description, image, order, icon } = body ?? {};
 
     const missing = [];
     if (title == null || title === '') missing.push('title');
@@ -66,6 +66,7 @@ export async function POST(request) {
       description,
       image,
       order: Number(order),
+      icon: typeof icon === 'string' ? icon.trim() : '',
     });
 
     return NextResponse.json({ feature: feature.toObject() }, { status: 201 });

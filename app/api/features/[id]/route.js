@@ -25,12 +25,15 @@ export async function PUT(request, { params }) {
     }
 
     const body = await request.json();
-    const { title, description, image, order } = body ?? {};
+    const { title, description, image, order, icon } = body ?? {};
 
     const update = {};
     if (title !== undefined) update.title = title;
     if (description !== undefined) update.description = description;
     if (image !== undefined) update.image = image;
+    if (icon !== undefined) {
+      update.icon = typeof icon === 'string' ? icon.trim() : '';
+    }
     if (order !== undefined) {
       if (Number.isNaN(Number(order))) {
         return NextResponse.json(

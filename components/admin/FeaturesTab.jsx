@@ -10,6 +10,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { uploadImageToCloudinary } from './uploadClient';
+import { FEATURE_ICON_OPTIONS } from '@/lib/featureIcons';
 
 export default function FeaturesTab() {
   const [features, setFeatures] = useState([]);
@@ -21,6 +22,7 @@ export default function FeaturesTab() {
     title: '',
     description: '',
     image: '',
+    icon: '',
     order: 0,
   });
   const [adding, setAdding] = useState(false);
@@ -66,12 +68,19 @@ export default function FeaturesTab() {
           title: newFeature.title,
           description: newFeature.description,
           image: newFeature.image,
+          icon: newFeature.icon,
           order: Number(newFeature.order),
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to add feature');
-      setNewFeature({ title: '', description: '', image: '', order: features.length });
+      setNewFeature({
+        title: '',
+        description: '',
+        image: '',
+        icon: '',
+        order: features.length,
+      });
       setMessage({ type: 'success', text: 'Feature created.' });
       await load();
     } catch (err) {
@@ -108,6 +117,7 @@ export default function FeaturesTab() {
       title: f.title,
       description: f.description,
       image: f.image,
+      icon: f.icon ?? '',
       order: f.order,
     });
   }
@@ -125,6 +135,7 @@ export default function FeaturesTab() {
           title: editDraft.title,
           description: editDraft.description,
           image: editDraft.image,
+          icon: editDraft.icon,
           order: Number(editDraft.order),
         }),
       });
@@ -270,6 +281,25 @@ export default function FeaturesTab() {
             onChange={(v) => setNewFeature((p) => ({ ...p, title: v }))}
           />
           <div>
+            <label className="mb-1 block text-sm font-medium text-white/80">
+              Icon (optional)
+            </label>
+            <select
+              value={newFeature.icon}
+              onChange={(e) =>
+                setNewFeature((p) => ({ ...p, icon: e.target.value }))
+              }
+              className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40"
+            >
+              <option value="">None</option>
+              {FEATURE_ICON_OPTIONS.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label className="mb-1 block text-sm font-medium text-white/80">Order</label>
             <input
               type="number"
@@ -346,6 +376,25 @@ export default function FeaturesTab() {
                       value={editDraft.title}
                       onChange={(v) => setEditDraft((d) => ({ ...d, title: v }))}
                     />
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-white/80">
+                        Icon (optional)
+                      </label>
+                      <select
+                        value={editDraft.icon}
+                        onChange={(e) =>
+                          setEditDraft((d) => ({ ...d, icon: e.target.value }))
+                        }
+                        className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40"
+                      >
+                        <option value="">None</option>
+                        {FEATURE_ICON_OPTIONS.map((name) => (
+                          <option key={name} value={name}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                     <div>
                       <label className="mb-1 block text-sm font-medium text-white/80">Order</label>
                       <input

@@ -1,9 +1,16 @@
 'use client';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay, EffectFade, Pagination } from 'swiper/modules';
+import {
+  Autoplay,
+  EffectFade,
+  Keyboard,
+  Navigation,
+  Pagination,
+} from 'swiper/modules';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ApiStatusBanner from '@/components/ui/ApiStatusBanner';
+import { resolveFeatureIcon } from '@/lib/featureIcons';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
@@ -11,7 +18,14 @@ import 'swiper/css/pagination';
 
 /**
  * @param {{
- *   features: Array<{ _id: string; title: string; description: string; image: string; order?: number }>;
+ *   features: Array<{
+ *     _id: string;
+ *     title: string;
+ *     description: string;
+ *     image: string;
+ *     order?: number;
+ *     icon?: string;
+ *   }>;
  *   apiUnavailable?: boolean;
  *   apiErrorMessage?: string | null;
  * }} props
@@ -27,7 +41,8 @@ export default function FeatureSliderClient({
         {apiUnavailable && (
           <div className="absolute left-0 right-0 top-0">
             <ApiStatusBanner variant="error">
-              Couldn&apos;t load features.{apiErrorMessage ? ` ${apiErrorMessage}` : ''}
+              Couldn&apos;t load features.
+              {apiErrorMessage ? ` ${apiErrorMessage}` : ''}
             </ApiStatusBanner>
           </div>
         )}
@@ -43,73 +58,83 @@ export default function FeatureSliderClient({
   const loop = features.length > 1;
 
   return (
-    <section className="group relative flex h-[calc(100vh-70px)] w-full items-center justify-center overflow-hidden bg-black">
+    <section className="group relative flex min-h-[calc(100vh-70px)] w-full overflow-hidden bg-matte-black">
       <Swiper
-        modules={[Navigation, Autoplay, EffectFade, Pagination]}
+        modules={[Navigation, Autoplay, EffectFade, Pagination, Keyboard]}
         effect="fade"
         fadeEffect={{ crossFade: true }}
         loop={loop}
-        speed={900}
+        speed={850}
         autoplay={{
-          delay: 6500,
+          delay: 6800,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
+        keyboard={{ enabled: true }}
         navigation={{
           nextEl: '.feature-next',
           prevEl: '.feature-prev',
         }}
-        pagination={{ clickable: true }}
-        className="h-full w-full [&_.swiper-pagination]:!bottom-8 [&_.swiper-pagination]:z-20 [&_.swiper-pagination-bullet]:!h-2 [&_.swiper-pagination-bullet]:!w-2 [&_.swiper-pagination-bullet]:!bg-white/30 [&_.swiper-pagination-bullet-active]:!bg-tiger-yellow [&_.swiper-pagination-bullet-active]:!w-6"
+        pagination={{
+          clickable: true,
+          type: 'progressbar',
+        }}
+        className="h-full min-h-[calc(100vh-70px)] w-full [&_.swiper-pagination-progressbar]:!bottom-0 [&_.swiper-pagination-progressbar]:!top-auto [&_.swiper-pagination-progressbar]:!h-1 [&_.swiper-pagination-progressbar]:!bg-white/12 [&_.swiper-pagination-progressbar-fill]:!bg-tiger-yellow"
       >
-        {features.map((slide) => (
-          <SwiperSlide key={slide._id} className="!h-full">
-            <div className="relative flex h-full min-h-[calc(100vh-70px)] w-full items-center">
-              <div className="absolute inset-0 z-0">
-                {/* eslint-disable-next-line @next/next/no-img-element -- avoids next/image + Swiper/Fast Refresh hook issues */}
-                <img
-                  src={slide.image}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/[0.55] to-black/85" />
-                <div className="absolute inset-0 bg-black/35" />
-              </div>
+        {features.map((slide) => {
+          const Icon = resolveFeatureIcon(slide.icon);
+          return (
+            <SwiperSlide key={slide._id} className="!h-auto">
+              <div className="grid min-h-[calc(100vh-70px)] w-full lg:grid-cols-2">
+                <div className="relative min-h-[42vh] lg:min-h-[calc(100vh-70px)]">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- Swiper + remote URLs */}
+                  <img
+                    src={slide.image}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/45 lg:bg-gradient-to-r lg:from-black/55 lg:via-black/25 lg:to-transparent" />
+                </div>
 
-              <div className="relative z-10 flex h-full w-full items-center justify-center px-6 md:px-12 lg:px-16">
-                <div className="flex w-full max-w-xl flex-col items-center rounded-2xl border border-white/10 bg-white/[0.06] p-8 text-center backdrop-blur-xl md:max-w-2xl md:p-12 lg:p-14">
-                  <h2 className="mb-5 text-balance text-4xl font-black leading-[0.98] tracking-tight text-white md:mb-6 md:text-5xl lg:text-6xl">
-                    {slide.title}
-                  </h2>
-
-                  <p className="text-base font-medium leading-relaxed text-neutral-300 md:text-lg">
-                    {slide.description}
-                  </p>
+                <div className="flex flex-col justify-center border-t border-white/10 bg-neutral-950 px-6 py-12 md:px-12 lg:border-l lg:border-t-0 lg:px-14 lg:py-16">
+                  <div className="mx-auto w-full max-w-lg lg:mx-0">
+                    {Icon ? (
+                      <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-tiger-yellow">
+                        <Icon className="h-6 w-6" strokeWidth={1.5} aria-hidden />
+                      </div>
+                    ) : null}
+                    <h2 className="text-balance text-3xl font-black uppercase leading-[1.02] tracking-tight text-white md:text-4xl lg:text-5xl">
+                      {slide.title}
+                    </h2>
+                    <p className="mt-5 max-w-prose text-base font-medium leading-relaxed text-neutral-300 md:text-lg">
+                      {slide.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
 
-      {features.length > 1 && (
+      {features.length > 1 ? (
         <>
           <button
             type="button"
-            className="feature-prev absolute left-8 top-1/2 z-30 flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full border border-white/5 bg-black/10 text-white/50 opacity-60 backdrop-blur-md transition-all hover:text-white md:left-12 md:opacity-0 md:group-hover:opacity-100"
-            aria-label="Previous slide"
+            className="feature-prev absolute left-3 top-[24vh] z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white/85 transition hover:bg-black/70 md:left-6 lg:top-1/2 lg:opacity-0 lg:group-hover:opacity-100"
+            aria-label="Previous feature"
           >
-            <ChevronLeft size={36} />
+            <ChevronLeft className="h-6 w-6" strokeWidth={1.5} />
           </button>
           <button
             type="button"
-            className="feature-next absolute right-8 top-1/2 z-30 flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full border border-white/5 bg-black/10 text-white/50 opacity-60 backdrop-blur-md transition-all hover:text-white md:right-12 md:opacity-0 md:group-hover:opacity-100"
-            aria-label="Next slide"
+            className="feature-next absolute right-3 top-[24vh] z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white/85 transition hover:bg-black/70 md:right-6 lg:top-1/2 lg:opacity-0 lg:group-hover:opacity-100"
+            aria-label="Next feature"
           >
-            <ChevronRight size={36} />
+            <ChevronRight className="h-6 w-6" strokeWidth={1.5} />
           </button>
         </>
-      )}
+      ) : null}
     </section>
   );
 }

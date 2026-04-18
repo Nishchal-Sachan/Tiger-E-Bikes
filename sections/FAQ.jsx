@@ -1,108 +1,72 @@
-'use client';
+import React from 'react';
+import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
-import React, { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { cn } from '@/utils/cn';
-
-const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(0);
-
-  const faqs = [
-    {
-      question: 'How long does it take to charge a TIGER EV?',
-      answer:
-        'Reach up to 70% in 15–20 minutes with fast charging. Full charge takes 4–6 hours.',
-    },
-    {
-      question: 'What is the battery life expectancy?',
-      answer:
-        'Designed for over 1500 cycles, delivering 8–10 years of reliable performance.',
-    },
-    {
-      question: 'Are TIGER EV vehicles waterproof?',
-      answer:
-        'Yes, IP67-rated protection ensures durability in all weather conditions.',
-    },
-    {
-      question: 'Do I need a special license?',
-      answer:
-        'Depends on model—standard license for low-speed, motorcycle license for high-performance models.',
-    },
-  ];
-
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? -1 : index);
-  };
-
+export default function FAQ() {
   return (
-    <section className="bg-white py-24 md:py-32 px-6 md:px-12 overflow-hidden border-t border-matte-black/5" id="faq">
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 font-['Inter', sans-serif]">
-        
-        {/* LEFT: Section Title */}
-        <div className="lg:col-span-5 space-y-10">
+    <section
+      className="relative overflow-hidden border-t-2 border-tiger-yellow/25 bg-gradient-to-b from-neutral-100 via-white to-neutral-50 px-6 py-28 md:py-36"
+      id="faq"
+    >
+      <div
+        className="pointer-events-none absolute -right-24 top-1/4 h-[420px] w-[420px] rounded-full bg-tiger-yellow/[0.09] blur-[100px]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -left-32 bottom-0 h-[320px] w-[320px] rounded-full bg-neutral-300/25 blur-[90px]"
+        aria-hidden
+      />
+
+      <div className="relative z-[2] mx-auto max-w-[1400px]">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
+          <div className="lg:col-span-5 lg:pt-2">
             <div className="space-y-6 text-center lg:text-left">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-matte-black tracking-[-0.04em] uppercase leading-[0.95] max-w-lg mx-auto lg:mx-0">
+              <div className="space-y-4">
+                <div className="mx-auto h-px w-12 bg-matte-black lg:mx-0" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-matte-black md:text-xs">
+                  Buyer support
+                </p>
+              </div>
+              <h2 className="mx-auto max-w-xl text-4xl font-black uppercase leading-[0.95] tracking-[-0.04em] text-matte-black md:text-5xl lg:mx-0 lg:max-w-lg lg:text-6xl">
                 FREQUENTLY ASKED QUESTIONS
               </h2>
+              <div className="mx-auto h-1 w-14 rounded-full bg-tiger-yellow lg:mx-0" />
             </div>
-            <p className="text-neutral-600 text-lg md:text-xl font-medium leading-relaxed max-w-md mx-auto lg:mx-0 text-center lg:text-left">
-              Answers to common questions. Visit a showroom for a test ride or detailed consultation.
+            <p className="mx-auto mt-8 max-w-xl text-center text-base font-medium leading-relaxed text-neutral-600 md:text-lg lg:mx-0 lg:mt-10 lg:text-left">
+              Everything you need to know about owning and riding a TIGER EV. For more details, visit a showroom or
+              book a test ride.
             </p>
-            <div className="flex justify-center lg:justify-start">
-              <button
-                type="button"
-                className="flex items-center gap-3 bg-matte-black text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-xl active:scale-95"
-              >
-                FIND A SHOWROOM
-              </button>
-            </div>
+          </div>
+
+          <div className="relative z-[2] lg:col-span-7">
+            <FaqAccordion variant="light" itemIdPrefix="home-faq" />
+          </div>
         </div>
 
-        {/* RIGHT: Accordion */}
-        <div className="lg:col-span-7 space-y-2">
-          {faqs.map((faq, index) => (
-            <div 
-              key={faq.question} 
-              className={cn(
-                "border-b transition-all duration-300 group",
-                openIndex === index ? "border-tiger-yellow" : "border-neutral-100"
-              )}
-            >
-              <button 
-                type="button"
-                onClick={() => toggleFAQ(index)}
-                className="w-full py-8 flex items-center justify-between text-left group"
-              >
-                <span className={cn(
-                  "text-xl md:text-2xl font-black uppercase tracking-tight transition-colors",
-                  openIndex === index ? "text-matte-black" : "text-neutral-400 group-hover:text-matte-black"
-                )}>
-                  {faq.question}
-                </span>
-                <div className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300",
-                  openIndex === index ? "rotate-90 bg-tiger-yellow text-black border-tiger-yellow shadow-lg" : "bg-transparent text-neutral-300 border-neutral-100 group-hover:border-neutral-300"
-                )}>
-                  <Plus size={20} strokeWidth={3} />
-                </div>
-              </button>
-              
-              <div 
-                className={cn(
-                  "overflow-hidden transition-all duration-500",
-                  openIndex === index ? "max-h-[400px] pb-12" : "max-h-0"
-                )}
-              >
-                <p className="text-neutral-600 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
-                  {faq.answer}
+        <div className="relative z-[2] mx-auto mt-20 max-w-[1400px] md:mt-24">
+          <div className="rounded-3xl border-2 border-neutral-200 bg-white px-8 py-10 shadow-[0_24px_60px_rgba(0,0,0,0.06)] md:px-12 md:py-12">
+            <div className="flex flex-col items-center gap-8 text-center lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:text-left">
+              <div className="max-w-2xl space-y-3">
+                <p className="text-lg font-bold text-matte-black md:text-xl">Still have questions?</p>
+                <p className="text-base font-medium leading-relaxed text-neutral-600 md:text-lg">
+                  Talk to our EV expert or visit your nearest showroom.
+                </p>
+              </div>
+              <div className="flex w-full flex-col items-center gap-4 sm:w-auto lg:items-end lg:shrink-0">
+                <Link
+                  href="/dealership"
+                  className="inline-flex w-full min-w-[220px] items-center justify-center rounded-2xl bg-matte-black px-10 py-5 text-center text-xs font-black uppercase tracking-[0.2em] text-white shadow-xl transition-transform hover:scale-[1.02] active:scale-[0.98] sm:w-auto"
+                >
+                  Find a Showroom
+                </Link>
+                <p className="text-sm font-medium text-neutral-500">
+                  Built for reliability, efficiency, and everyday use.
                 </p>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default FAQ;
+}

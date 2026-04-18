@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAdminFromRequest, unauthorizedJson } from '@/lib/auth';
 import { connectDB, isMongoConfigured } from '@/lib/db';
 import { Product, PRODUCT_CATEGORIES } from '@/models/Product';
+import { getPublicProducts } from '@/lib/products/getPublicProducts';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,12 +28,13 @@ export async function GET(request) {
       filter.category = category;
     }
 
-    if (!isMongoConfigured()) {
-      return NextResponse.json({ products: [] });
+    const { ok, products, error } = await getPublicProducts(filter);
+    if (!ok) {
+      return NextResponse.json(
+        { error: error || 'Failed to fetch products' },
+        { status: 500 }
+      );
     }
-
-    await connectDB();
-    const products = await Product.find(filter).sort({ createdAt: -1 }).lean();
     return NextResponse.json({ products });
   } catch (err) {
     console.error('[GET /api/products]', err);

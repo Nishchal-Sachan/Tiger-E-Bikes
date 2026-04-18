@@ -1,7 +1,4 @@
 import { Suspense } from 'react';
-
-/** Ensures SSR uses the real request host/port for /api fetches (avoids wrong-port issues in dev). */
-export const dynamic = 'force-dynamic';
 import Hero from '@/sections/Hero';
 import HeroLoading from '@/sections/HeroLoading';
 import FeatureSlider from '@/sections/FeatureSlider';
@@ -13,6 +10,9 @@ import VehicleShowcase from '@/sections/VehicleShowcase';
 import VehicleShowcaseLoading from '@/sections/VehicleShowcaseLoading';
 import FAQ from '@/sections/FAQ';
 import Footer from '@/components/Footer';
+
+/** Ensures SSR uses the real request host/port for /api fetches (avoids wrong-port issues in dev). */
+export const dynamic = 'force-dynamic';
 
 export default function Home() {
   return (
@@ -47,8 +47,8 @@ export default function Home() {
         <ImpactStats />
       </section>
 
-      {/* 6. Vehicle Showcase (dynamic via /api/products) */}
-      <section className="w-full relative z-10 m-0 p-0">
+      {/* 6. Vehicle Showcase — z-20 so interactive cards stay above earlier sections */}
+      <section className="w-full relative z-20 m-0 p-0">
         <Suspense fallback={<VehicleShowcaseLoading />}>
           <VehicleShowcase />
         </Suspense>
